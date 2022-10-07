@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
 
-contract URANFTMarket is ReentrancyGuard {
+contract NFTMarket is ReentrancyGuard {
     using Counters for Counters.Counter;
     Counters.Counter private _itemIds;
     Counters.Counter private _itemsSold;
@@ -62,7 +62,7 @@ contract URANFTMarket is ReentrancyGuard {
         nftContract,
         tokenId,
         payable(msg.sender),
-        payable(address(0)),
+    payable(address(0)),
         price,
         false
         );
@@ -162,5 +162,19 @@ contract URANFTMarket is ReentrancyGuard {
             }
         }
         return items;
+    }
+
+    /* Returns only item match tokenId argument */
+    function fetchItemById(uint256 tokenId) public view returns (MarketItem memory) {
+        uint totalItemCount = _itemIds.current();
+        uint itemCount = 0;
+        uint currentIndex = 0;
+
+        for (uint i = 0; i < totalItemCount; i++) {
+            if (idToMarketItem[i + 1].tokenId == tokenId) {
+                return idToMarketItem[i + 1];
+            }
+        }
+        revert("Item not found");
     }
 }
