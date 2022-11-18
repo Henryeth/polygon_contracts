@@ -43,6 +43,15 @@ contract URABlindBox is ERC721URIStorage, ERC721Enumerable, ERC721Burnable {
         marketplaceAddress = _marketplaceAddress;
         baseURI = _baseURI;
     }
+    
+    function _isNotOpened(uint256 _boxId) public view returns (bool) {
+        // Compare string keccak256 hashes to check equality
+        string memory _tokenURI = tokenURI(_boxId);
+        if (keccak256(abi.encodePacked(baseURI)) == keccak256(abi.encodePacked(_tokenURI))) {
+            return true;
+        }
+        return false;
+    }
 
     function _getRandom(uint256 _start, uint256 _end) private returns(uint256){
         if (_start == _end) {
@@ -105,6 +114,7 @@ contract URABlindBox is ERC721URIStorage, ERC721Enumerable, ERC721Burnable {
 
     function openBox(uint256 _boxId) public returns (uint256) {
         require(ownerOf(_boxId) == msg.sender, "You are not the owner of this box");
+        require(_isNotOpened(_boxId), "This box is already opened");
         require(block.timestamp >= openTime[_boxId], "You have to wait more");
         uint256 random = _getRandom(0, 100);
         uint256 indexURI = 0;
