@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 
-contract NFT is ERC721URIStorage, ERC721Enumerable, ERC721Burnable {
+contract URANFT is ERC721URIStorage, ERC721Enumerable, ERC721Burnable {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
     address contractAddress;
@@ -45,12 +45,12 @@ contract NFT is ERC721URIStorage, ERC721Enumerable, ERC721Burnable {
         return super.supportsInterface(interfaceId);
     }
 
-    function createToken(string memory tokenURI) public returns (uint) {
+    function createToken(string memory _tokenURI) public returns (uint) {
         _tokenIds.increment();
         uint256 newItemId = _tokenIds.current();
 
         _mint(msg.sender, newItemId);
-        _setTokenURI(newItemId, tokenURI);
+        _setTokenURI(newItemId, _tokenURI);
         setApprovalForAll(contractAddress, true);
         return newItemId;
     }

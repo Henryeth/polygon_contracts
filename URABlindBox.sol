@@ -8,6 +8,8 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
+import "hardhat/console.sol";
+
 contract URABlindBox is ERC721URIStorage, ERC721Enumerable, ERC721Burnable {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
@@ -43,7 +45,7 @@ contract URABlindBox is ERC721URIStorage, ERC721Enumerable, ERC721Burnable {
         marketplaceAddress = _marketplaceAddress;
         baseURI = _baseURI;
     }
-    
+
     function _isNotOpened(uint256 _boxId) public view returns (bool) {
         // Compare string keccak256 hashes to check equality
         string memory _tokenURI = tokenURI(_boxId);
